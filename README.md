@@ -1,2 +1,2 @@
 # Composer
-Support scripts for composer installation of QCubed
+Support scripts for composer installation of QCubed-4
