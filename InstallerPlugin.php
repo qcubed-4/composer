@@ -18,4 +18,9 @@ class InstallerPlugin implements PluginInterface
 		$installer = new \QCubed\Composer\Installer($io, $composer);
 		$composer->getInstallationManager()->addInstaller($installer);
 	}
+	public function unistall(Composer $composer, IOInterface $io)
+	{
+		$installer = new \QCubed\Composer\Installer($io, $composer);
+		$composer->getInstallationManager()->addInstaller($installer);
+	}
 }
