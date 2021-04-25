@@ -20,7 +20,7 @@ class InstallerPlugin implements PluginInterface
 	public function unistall(Composer $composer, IOInterface $io)
 	{
 		// Not needed ???
-		if ($this->uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)) 
+		if ($this->uninstall($io, $composer)) 
 			return;
 	}
 }
