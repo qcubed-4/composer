@@ -17,8 +17,8 @@ class InstallerPlugin implements PluginInterface
 	{
 		
 	}
-	public function unistall(Composer $composer, IOInterface $io)
-	{
+	//public function unistall(Composer $composer, IOInterface $io)
+	//{
 	
-	}
+	//}
 }
