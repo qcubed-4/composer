@@ -15,10 +15,10 @@ class InstallerPlugin implements PluginInterface
 	}
 	public function deactivate(Composer $composer, IOInterface $io)
 	{
-		
+		// Not needed ???
 	}
 	//public function unistall(Composer $composer, IOInterface $io)
 	//{
-	
+		// Not needed ???
 	//}
 }
