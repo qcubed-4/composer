@@ -8,10 +8,12 @@ use Composer\Plugin\PluginInterface;
 
 class InstallerPlugin implements PluginInterface
 {
+	private $installer;
+	
 	public function activate(Composer $composer, IOInterface $io)
 	{
-		$installer = new \QCubed\Composer\Installer($io, $composer);
-		$composer->getInstallationManager()->addInstaller($installer);
+		$this->installer = new \QCubed\Composer\Installer($io, $composer);
+		$composer->getInstallationManager()->addInstaller($this->installer);
 	}
 	public function deactivate(Composer $composer, IOInterface $io)
 	{
