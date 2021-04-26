@@ -24,7 +24,7 @@ class Installer extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return ('qcubed-library' === $packageType || 'qcubed-framework' === $packageType);
+        return ('qcubed-library' === $packageType);
     }
 
     /**
@@ -41,11 +41,6 @@ class Installer extends LibraryInstaller
             case 'qcubed-library':
                 $this->composerLibraryInstall($package);
                 break;
-            case 'qcubed-framework':
-                $this->composerFrameworkInstall($package);
-                break;
-
-
         }
     }
 
@@ -94,36 +89,6 @@ class Installer extends LibraryInstaller
     protected function normalizeNonPosixPath($s)
     {
         return str_replace('\\', '/', $s);
-    }
-
-    /**
-     * First time installation of framework. For first-time installation, we create the project directory.
-     *
-     * @param $strPackageName
-     */
-    protected function composerFrameworkInstall($package) {
-        $extra = $package->getExtra();
-
-        // recursively copy the contents of the install directory, providing each file is not there.
-        $strInstallDir = self::normalizeNonPosixPath($this->getPackageBasePath($package)) . '/install/project';
-        $strDestDir = ($this->vendorDir ? $this->vendorDir . '/' : '') . '../project'; // try to find the default project location
-        $strDestDir = self::normalizeNonPosixPath($strDestDir);
-
-        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
-        self::copy_dir($strInstallDir, $strDestDir);
-
-        // Make sure particular directories are writable by the web server. These are listed in the extra section of the composer.json file.
-        // We are assuming that the first time installation is installed in a subdirectory of docroot.
-        $strInstallDir = self::normalizeNonPosixPath(realpath(dirname($strDestDir)));
-
-        $this->io->write('Updating permissions');
-        foreach ($extra['writePermission'] as $strDir) {
-            $strTargetDir = $strInstallDir . '/' . $strDir;
-            if(!file_exists($strTargetDir)){
-                mkdir($strTargetDir, 0777, true);
-            }
-            chmod ($strTargetDir, 0777);
-        }
     }
 
     /**
