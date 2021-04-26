@@ -18,7 +18,6 @@ class InstallerPlugin implements PluginInterface
 	public function deactivate(Composer $composer, IOInterface $io)
 	{
 		$composer->getInstallationManager()->removeInstaller($this->installer);
-		// Not needed ???
 	}
 	public function unistall(Composer $composer, IOInterface $io)
 	{
