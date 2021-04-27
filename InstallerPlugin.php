@@ -15,12 +15,12 @@ class InstallerPlugin implements PluginInterface
 		$this->installer = new \QCubed\Composer\Installer($io, $composer);
 		$composer->getInstallationManager()->addInstaller($this->installer);
 	}
-	public function deactivate(Composer $composer, IOInterface $io)
-	{
-		$composer->getInstallationManager()->removeInstaller($this->installer);
-	}
-	public function unistall(Composer $composer, IOInterface $io)
-	{
-		// Not needed ???
-	}
+//	public function deactivate(Composer $composer, IOInterface $io)
+//	{
+//		$composer->getInstallationManager()->removeInstaller($this->installer);
+//	}
+//	public function unistall(Composer $composer, IOInterface $io)
+//	{
+//		// Not needed ???
+//	}
 }
