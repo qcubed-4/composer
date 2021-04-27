@@ -10,6 +10,10 @@ namespace QCubed\Composer;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
+use Composer\Repository\RepositoryInterface;
+use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\DependencyResolver\Operation\UninstallOperation;
 
 $__CONFIG_ONLY__ = true;
 
@@ -30,16 +34,17 @@ class Installer extends LibraryInstaller
     /**
      * Respond to the install command.
      *
-     * @param InstalledRepositoryInterface $repo
-     * @param PackageInterface $package
+     * @param RepositoryInterface $repo
+     * @param InstallOperation $operation
      */
-    public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
-    {
-        parent::install($repo, $package);
 
-        switch ($package->getType()) {
+    public function install(RepositoryInterface $repo, InstallOperation $operation)
+    {
+        parent::install($repo, $operation);
+
+        switch ($operation->getType()) {
             case 'qcubed-library':
-                $this->composerLibraryInstall($package);
+                $this->composerLibraryInstall($operation);
                 break;
         }
     }
@@ -71,15 +76,27 @@ class Installer extends LibraryInstaller
 
         }
 
-        $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
-        $strInstallDir = $strLibraryDir . '/install';
+        $strInstallDir = '/install';
+        $this->getInstallPath($strInstallDir);
+
 
         $this->filesystem->ensureDirectoryExists($strDestDir);
         $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
         self::copy_dir($strInstallDir, $strDestDir);
 
         $this->register();
+    }
+
+    /**
+     * Returns the installation path of a package
+     *
+     * @param  PackageInterface $package
+     * @return string           path to install to, which MUST not end with a slash
+     */
+    public function getInstallPath(PackageInterface $package)
+    {
+        return $package;
     }
 
     protected function register()
@@ -91,16 +108,17 @@ class Installer extends LibraryInstaller
         return str_replace('\\', '/', $s);
     }
 
+
     /**
-     * Respond to an update command.
+     * Executes update operation.
      *
-     * @param InstalledRepositoryInterface $repo
-     * @param PackageInterface $initial
+     * @param RepositoryInterface $repo      repository in which to check
+     * @param UpdateOperation     $operation operation instance
      * @param PackageInterface $target
      */
-    public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
+    public function update(RepositoryInterface $repo, UpdateOperation $operation, PackageInterface $target)
     {
-        parent::install($repo, $initial, $target);
+        parent::install($repo, $operation, $target);
 
         $this->unregister($target, true);
         $strPackageType = $target->getType();
@@ -126,25 +144,25 @@ class Installer extends LibraryInstaller
     /**
      * Uninstalls a plugin if requested.
      *
-     * @param InstalledRepositoryInterface $repo
-     * @param PackageInterface $package
+     * @param RepositoryInterface $repo
+     * @param UninstallOperation $operation
      */
-    public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
+    public function uninstall(RepositoryInterface $repo, UninstallOperation $operation)
     {
-        $strPackageType = $package->getType();
+        $strPackageType = $operation->getType();
         if ($strPackageType == "qcubed-library") {
-            $this->composerLibraryUninstall($package);
+            $this->composerLibraryUninstall($operation);
         }
-        parent::uninstall($repo, $package);
+        parent::uninstall($repo, $operation);
     }
 
 
     /**
      * Delete the given plugin.
      *
-     * @param PackageInterface $package
+     * @param UninstallOperation $package
      */
-    public function composerLibraryUninstall(PackageInterface $package)
+    public function composerLibraryUninstall(UninstallOperation $package)
     {
         // recursively delete the contents of the install directory, providing each file is there.
         $this->unregister($package, false);
@@ -196,7 +214,7 @@ class Installer extends LibraryInstaller
         }
 
         $targetDir = QCUBED_CONFIG_DIR . '/control_registry';
-        $srcDir = $this->getInstallPath($package) . '/install/project/includes/configuration/control_registry';
+        $srcDir = $this->getInstallPath($targetDir) . '/install/project/includes/configuration/control_registry';
 
         self::removeMatchingFiles($srcDir, $targetDir);
     }
