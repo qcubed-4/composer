@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6c0db9f4-eb57-40cf-9284-c488bb81774c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Installer.php" afterPath="$PROJECT_DIR$/Installer.php" />
-    </list>
+    <list default="true" id="6c0db9f4-eb57-40cf-9284-c488bb81774c" name="Default" comment="" />
     <ignored path="composer.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -27,8 +25,8 @@
       <file leaf-file-name="Installer.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Installer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.7247707">
-              <caret line="146" column="10" selection-start-line="146" selection-start-column="10" selection-end-line="146" selection-end-column="10" />
+            <state vertical-scroll-proportion="-1.146789">
+              <caret line="152" column="6" selection-start-line="152" selection-start-column="6" selection-end-line="152" selection-end-column="6" />
               <folding>
                 <element signature="e#131#153#0#PHP" expanded="true" />
               </folding>
@@ -445,8 +443,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Installer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.7247707">
-          <caret line="146" column="10" selection-start-line="146" selection-start-column="10" selection-end-line="146" selection-end-column="10" />
+        <state vertical-scroll-proportion="-1.146789">
+          <caret line="152" column="6" selection-start-line="152" selection-start-column="6" selection-end-line="152" selection-end-column="6" />
           <folding>
             <element signature="e#131#153#0#PHP" expanded="true" />
           </folding>
