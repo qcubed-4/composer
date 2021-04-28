@@ -15,6 +15,8 @@ $__CONFIG_ONLY__ = true;
 
 class Installer extends LibraryInstaller
 {
+    protected $strDestDir;
+
     /** Overrides **/
     /**
      * Return the types of packages that this installer is responsible for installing.
@@ -65,28 +67,38 @@ class Installer extends LibraryInstaller
         } else {
             // perhaps a first-time install, so default to the directory above the vendor directory
             if ($this->vendorDir) {
-                $strDestDir = realpath(dirname($this->vendorDir));
+                $this->strDestDir = realpath(dirname($this->vendorDir));
             } else {
-                $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
+                $this->strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
             }
 
         }
 
-        $strLibraryDir = $this->getInstallPath($package);
-        // recursively copy the contents of the install subdirectory in the plugin.
-        $strInstallDir = $strLibraryDir . '/install';
-
-        $this->filesystem->ensureDirectoryExists($strDestDir);
-        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
-        self::copy_dir($strInstallDir, $strDestDir);
-
-        $this->register();
+//        $strLibraryDir = $this->getInstallPath($package);
+//        // recursively copy the contents of the install subdirectory in the plugin.
+//        $strInstallDir = $strLibraryDir . '/install';
+//
+//        $this->filesystem->ensureDirectoryExists($strDestDir);
+//        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
+//        self::copy_dir($strInstallDir, $strDestDir);
+//
+//        $this->register();
     }
 
     public function getInstallPath(PackageInterface $package)
     {
         parent::getInstallPath($package);
-        
+
+        //$strLibraryDir = $this->getInstallPath($package);
+        // recursively copy the contents of the install subdirectory in the plugin.
+        $strInstallDir =  '/install';
+
+        $this->filesystem->ensureDirectoryExists($this->strDestDir);
+        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $this->strDestDir);
+        self::copy_dir($strInstallDir, $this->strDestDir);
+
+        $this->register();
+
         return $package;
     }
 
