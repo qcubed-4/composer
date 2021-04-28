@@ -144,7 +144,7 @@ class Installer implements PluginInterface
         if ($strPackageType == "qcubed-library") {
             $this->composerLibraryUninstall($package);
         }
-        parent::uninstall($repo, $package);
+        //parent::uninstall($repo, $package);
     }
 
 
