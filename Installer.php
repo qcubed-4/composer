@@ -7,14 +7,23 @@
 
 namespace QCubed\Composer;
 
+use Composer\Composer;
+use Composer\IO\IOInterface;
+use Composer\Plugin\PluginInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
 
 $__CONFIG_ONLY__ = true;
 
-class Installer extends LibraryInstaller
+class Installer implements PluginInterface
 {
+    public function activate(Composer $composer, IOInterface $io)
+    {
+        $this->installer = new \QCubed\Composer\Installer($io, $composer);
+        $composer->getInstallationManager()->addInstaller($this->installer);
+    }
+
     /** Overrides **/
     /**
      * Return the types of packages that this installer is responsible for installing.
@@ -70,8 +79,6 @@ class Installer extends LibraryInstaller
                 $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
             }
         }
-
-        $this->io->write('Copying files from ' . $strDestDir);
 
         $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
