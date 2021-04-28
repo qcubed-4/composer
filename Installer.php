@@ -72,7 +72,7 @@ class Installer extends LibraryInstaller
 
         }
 
-        $strLibraryDir = $this->getPackageBasePath($package);
+        $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
 
@@ -86,6 +86,7 @@ class Installer extends LibraryInstaller
     public function getInstallPath(PackageInterface $package)
     {
         parent::getInstallPath($package);
+        
         return $package;
     }
 
@@ -203,7 +204,7 @@ class Installer extends LibraryInstaller
         }
 
         $targetDir = QCUBED_CONFIG_DIR . '/control_registry';
-        $srcDir = $this->getPackageBasePath($package) . '/install/project/includes/configuration/control_registry';
+        $srcDir = $this->getInstallPath($package) . '/install/project/includes/configuration/control_registry';
 
         self::removeMatchingFiles($srcDir, $targetDir);
     }
