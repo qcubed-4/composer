@@ -80,7 +80,9 @@ class Installer implements PluginInterface
             }
         }
 
-        $strLibraryDir = $this->getInstallPath($package);
+        // Currently composer version: v1.0.5. As of composer/composer version: 1.10.0,
+        // the getPackageBasePath() function is not supported
+        $strLibraryDir = $this->getPackageBasePath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
 
@@ -140,10 +142,10 @@ class Installer implements PluginInterface
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $strPackageType = $package->getType();
-        if ($strPackageType == "qcubed-library") {
-            $this->composerLibraryUninstall($package);
-        }
+//        $strPackageType = $package->getType();
+//        if ($strPackageType == "qcubed-library") {
+//            $this->composerLibraryUninstall($package);
+//        }
         //parent::uninstall($repo, $package);
     }
 
