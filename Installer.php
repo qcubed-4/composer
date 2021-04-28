@@ -83,6 +83,12 @@ class Installer extends LibraryInstaller
         $this->register();
     }
 
+    public function getInstallPath(PackageInterface $package)
+    {
+        parent::getInstallPath($package);
+        return $package;
+    }
+
     protected function register()
     {
     }
