@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6c0db9f4-eb57-40cf-9284-c488bb81774c" name="Default" comment="" />
+    <list default="true" id="6c0db9f4-eb57-40cf-9284-c488bb81774c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Installer.php" afterPath="$PROJECT_DIR$/Installer.php" />
+    </list>
     <ignored path="composer.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -25,8 +27,8 @@
       <file leaf-file-name="Installer.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Installer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.04587156">
-              <caret line="199" column="39" selection-start-line="199" selection-start-column="39" selection-end-line="199" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.44954127">
+              <caret line="73" column="47" selection-start-line="73" selection-start-column="47" selection-end-line="73" selection-end-column="47" />
               <folding>
                 <element signature="e#131#169#0#PHP" expanded="true" />
               </folding>
@@ -211,7 +213,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1280" height="719" extended-state="6" />
+    <frame x="0" y="25" width="1280" height="719" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15508886" sideWeight="0.49346405" order="0" side_tool="false" content_ui="tabs" />
@@ -433,8 +435,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Installer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.04587156">
-          <caret line="199" column="39" selection-start-line="199" selection-start-column="39" selection-end-line="199" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.44954127">
+          <caret line="73" column="47" selection-start-line="73" selection-start-column="47" selection-end-line="73" selection-end-column="47" />
           <folding>
             <element signature="e#131#169#0#PHP" expanded="true" />
           </folding>
