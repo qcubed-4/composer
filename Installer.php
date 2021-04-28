@@ -109,7 +109,7 @@ class Installer implements PluginInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        parent::install($repo, $initial, $target);
+        //parent::install($repo, $initial, $target);
 
         $this->unregister($target, true);
         $strPackageType = $target->getType();
