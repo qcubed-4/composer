@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6c0db9f4-eb57-40cf-9284-c488bb81774c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Installer.php" afterPath="$PROJECT_DIR$/Installer.php" />
-    </list>
+    <list default="true" id="6c0db9f4-eb57-40cf-9284-c488bb81774c" name="Default" comment="" />
     <ignored path="composer.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
