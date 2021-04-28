@@ -44,7 +44,7 @@ class Installer implements PluginInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo, $package);
+        //parent::install($repo, $package);
 
         switch ($package->getType()) {
             case 'qcubed-library':
