@@ -73,7 +73,7 @@ class Installer extends LibraryInstaller
 
     public function getInstallPath(PackageInterface $package)
     {
-        return $this->composerLibraryInstall($package);
+        $this->composerLibraryInstall($package);
 //        $this->initializeVendorDir();
 //
 //        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
