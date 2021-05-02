@@ -63,8 +63,6 @@ class Installer extends LibraryInstaller
             $strDestDir = realpath(dirname($this->vendorDir));
         } else {
             $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
-        }
-    }
 
         $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
