@@ -37,11 +37,11 @@ class Installer extends LibraryInstaller
     {
         parent::install($repo, $package);
 
-//        switch ($package->getType()) {
-//            case 'qcubed-library':
-//                $this->composerLibraryInstall($package);
-//                break;
-//        }
+        switch ($package->getType()) {
+            case 'qcubed-library':
+                $this->composerLibraryInstall($package);
+                break;
+        }
     }
 
     /**
@@ -57,16 +57,16 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-//        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
+        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
 //        $strLibraryDir = $this->getInstallPath($package);
 //        // recursively copy the contents of the install subdirectory in the plugin.
-//        $strInstallDir = $strLibraryDir . '/install';
+        $strInstallDir = /*$strLibraryDir .*/$package->getPrettyName() . '/install';
 
-//        $this->filesystem->ensureDirectoryExists($strDestDir);
-//        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
-//        self::copy_dir($strInstallDir, $strDestDir);
-//
-//        $this->register();
+        $this->filesystem->ensureDirectoryExists($strDestDir);
+        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
+        self::copy_dir($strInstallDir, $strDestDir);
+
+        $this->register();
     }
 
     public function getInstallPath(PackageInterface $package)
