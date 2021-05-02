@@ -63,11 +63,11 @@ class Installer extends LibraryInstaller
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
 
-        $this->filesystem->ensureDirectoryExists($strDestDir);
-        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
-        self::copy_dir($strInstallDir, $strDestDir);
-
-        $this->register();
+//        $this->filesystem->ensureDirectoryExists($strDestDir);
+//        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
+//        self::copy_dir($strInstallDir, $strDestDir);
+//
+//        $this->register();
     }
 
     public function getInstallPath(PackageInterface $package)
