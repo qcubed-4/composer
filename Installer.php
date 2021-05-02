@@ -58,19 +58,13 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-        require_once(__DIR__ . '/qcubed.inc.php');    // get the configuration options so we can know where to put the plugin files
-
-        if (defined('QCUBED_PROJECT_DIR')) {
-            $strDestDir = realpath(dirname(QCUBED_PROJECT_DIR));
+        // perhaps a first-time install, so default to the directory above the vendor directory
+        if ($this->vendorDir) {
+            $strDestDir = realpath(dirname($this->vendorDir));
         } else {
-            // perhaps a first-time install, so default to the directory above the vendor directory
-            if ($this->vendorDir) {
-                $strDestDir = realpath(dirname($this->vendorDir));
-            } else {
-                $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
-            }
-
+            $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
         }
+    }
 
         $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
