@@ -58,13 +58,7 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-        // perhaps a first-time install, so default to the directory above the vendor directory
-        if ($this->vendorDir) {
-            $strDestDir = realpath(dirname($this->vendorDir));
-        } else {
-            $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
-        }
-
+        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
         $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
