@@ -43,7 +43,7 @@ class Installer extends LibraryInstaller
 //            case 'qcubed-library':
 //                $this->composerLibraryInstall($package);
 //                break;
-        }
+//        }
     }
 
     /**
