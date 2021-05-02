@@ -7,23 +7,14 @@
 
 namespace QCubed\Composer;
 
-use Composer\Composer;
-use Composer\IO\IOInterface;
-use Composer\Plugin\PluginInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
 
 $__CONFIG_ONLY__ = true;
 
-class Installer implements PluginInterface
+class Installer extends LibraryInstaller
 {
-    public function activate(Composer $composer, IOInterface $io)
-    {
-        $this->installer = new \QCubed\Composer\Installer($io, $composer);
-        $composer->getInstallationManager()->addInstaller($this->installer);
-    }
-
     /** Overrides **/
     /**
      * Return the types of packages that this installer is responsible for installing.
@@ -44,7 +35,7 @@ class Installer implements PluginInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        //parent::install($repo, $package);
+        parent::install($repo, $package);
 
         switch ($package->getType()) {
             case 'qcubed-library':
@@ -78,11 +69,10 @@ class Installer implements PluginInterface
             } else {
                 $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
             }
+
         }
 
-        // Currently composer version: v1.0.5. As of composer/composer version: 1.10.0,
-        // the getPackageBasePath() function is not supported
-        $strLibraryDir = $this->getPackageBasePath($package);
+        $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
 
@@ -91,6 +81,22 @@ class Installer implements PluginInterface
         self::copy_dir($strInstallDir, $strDestDir);
 
         $this->register();
+    }
+
+    public function getInstallPath(PackageInterface $package)
+    {
+        $this->initializeVendorDir();
+
+        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+        $targetDir = $package->getTargetDir();
+
+        return $basePath . ($targetDir ? '/'.$targetDir : '');
+    }
+
+    protected function initializeVendorDir()
+    {
+        $this->filesystem->ensureDirectoryExists($this->vendorDir);
+        $this->vendorDir = realpath($this->vendorDir);
     }
 
     protected function register()
@@ -111,7 +117,7 @@ class Installer implements PluginInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        //parent::install($repo, $initial, $target);
+        parent::install($repo, $initial, $target);
 
         $this->unregister($target, true);
         $strPackageType = $target->getType();
@@ -142,11 +148,11 @@ class Installer implements PluginInterface
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-//        $strPackageType = $package->getType();
-//        if ($strPackageType == "qcubed-library") {
-//            $this->composerLibraryUninstall($package);
-//        }
-        //parent::uninstall($repo, $package);
+        $strPackageType = $package->getType();
+        if ($strPackageType == "qcubed-library") {
+            $this->composerLibraryUninstall($package);
+        }
+        parent::uninstall($repo, $package);
     }
 
 
