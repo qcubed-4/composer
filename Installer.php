@@ -39,11 +39,11 @@ class Installer extends LibraryInstaller
     {
         parent::install($repo, $package);
 
-//        switch ($package->getType()) {
-//            case 'qcubed-library':
-//                $this->composerLibraryInstall($package);
-//                break;
-//        }
+        switch ($package->getType()) {
+            case 'qcubed-library':
+                $this->composerLibraryInstall($package);
+                break;
+        }
     }
 
     /**
@@ -59,7 +59,7 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
+        $strDestDir = realpath(dirname(dirname(dirname(__DIR__)))) . '/project';
         $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
@@ -73,30 +73,19 @@ class Installer extends LibraryInstaller
 
     public function getInstallPath(PackageInterface $package)
     {
-        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
-        $strLibraryDir = $this->getInstallPath($package);
-        // recursively copy the contents of the install subdirectory in the plugin.
-        $strInstallDir = $strLibraryDir . '/install';
+        $this->initializeVendorDir();
 
-        $this->filesystem->ensureDirectoryExists($strDestDir);
-        $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
-        self::copy_dir($strInstallDir, $strDestDir);
+        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+        $targetDir = $package->getTargetDir();
 
-        $this->register();
-
-//        $this->initializeVendorDir();
-//
-//        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
-//        $targetDir = $package->getTargetDir();
-//
-//        return $basePath . ($targetDir ? '/'.$targetDir : '');
+        return $basePath . ($targetDir ? '/'.$targetDir : '');
     }
 
-//    protected function initializeVendorDir()
-//    {
-//        $this->filesystem->ensureDirectoryExists($this->vendorDir);
-//        $this->vendorDir = realpath($this->vendorDir);
-//    }
+    protected function initializeVendorDir()
+    {
+        $this->filesystem->ensureDirectoryExists($this->vendorDir);
+        $this->vendorDir = realpath($this->vendorDir);
+    }
 
     protected function register()
     {
