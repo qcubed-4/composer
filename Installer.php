@@ -39,10 +39,10 @@ class Installer extends LibraryInstaller
     {
         parent::install($repo, $package);
 
-        switch ($package->getType()) {
-            case 'qcubed-library':
-                $this->composerLibraryInstall($package);
-                break;
+//        switch ($package->getType()) {
+//            case 'qcubed-library':
+//                $this->composerLibraryInstall($package);
+//                break;
         }
     }
 
