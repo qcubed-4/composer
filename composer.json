@@ -1,5 +1,5 @@
 {
-  "name": "qcubed/composer",
+  "name": "qcubed-4/composer",
   "description": "Installer plugin for the QCubed framework.",
   "type": "composer-plugin",
   "keywords": ["qcubed", "composer", "install"],
