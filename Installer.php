@@ -10,6 +10,8 @@ namespace QCubed\Composer;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
+use Composer\Util\Filesystem;
+use React\Promise\PromiseInterface;
 
 $__CONFIG_ONLY__ = true;
 
