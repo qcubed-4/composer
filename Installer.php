@@ -59,10 +59,10 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-        $strDestDir = realpath(dirname(dirname(dirname(__DIR__)))) . '/project';
-        $strLibraryDir = $this->getInstallPath($package);
+        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
+//        $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
-        $strInstallDir = $strLibraryDir . '/install';
+        $strInstallDir = /*$strLibraryDir .*/ '/install';
 
         $this->filesystem->ensureDirectoryExists($strDestDir);
         $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
