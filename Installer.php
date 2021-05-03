@@ -39,11 +39,11 @@ class Installer extends LibraryInstaller
     {
         parent::install($repo, $package);
 
-//        switch ($package->getType()) {
-//            case 'qcubed-library':
-//                $this->composerLibraryInstall($package);
-//                break;
-//        }
+        switch ($package->getType()) {
+            case 'qcubed-library':
+                $this->composerLibraryInstall($package);
+                break;
+        }
     }
 
     /**
@@ -59,12 +59,25 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
-//        $strLibraryDir = $this->getInstallPath($package);
-        // recursively copy the contents of the install subdirectory in the plugin.
-        $strInstallDir = /*$strLibraryDir .*/ '/install';
+        require_once(__DIR__ . '/qcubed.inc.php');    // get the configuration options so we can know where to put the plugin files
 
-        //$this->filesystem->ensureDirectoryExists($strDestDir);
+        if (defined('QCUBED_PROJECT_DIR')) {
+            $strDestDir = realpath(dirname(QCUBED_PROJECT_DIR));
+        } else {
+            // perhaps a first-time install, so default to the directory above the vendor directory
+            if ($this->vendorDir) {
+                $strDestDir = realpath(dirname($this->vendorDir));
+            } else {
+                $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
+            }
+
+        }
+
+        $strLibraryDir = $this->getInstallPath($package);
+        // recursively copy the contents of the install subdirectory in the plugin.
+        $strInstallDir = $strLibraryDir . '/install';
+
+        $this->filesystem->ensureDirectoryExists($strDestDir);
         $this->io->write('Copying files from ' . $strInstallDir . ' to ' . $strDestDir);
         self::copy_dir($strInstallDir, $strDestDir);
 
@@ -73,13 +86,12 @@ class Installer extends LibraryInstaller
 
     public function getInstallPath(PackageInterface $package)
     {
-        $this->composerLibraryInstall($package);
-//        $this->initializeVendorDir();
-//
-//        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
-//        $targetDir = $package->getTargetDir();
-//
-//        return $basePath . ($targetDir ? '/'.$targetDir : '');
+        $this->initializeVendorDir();
+
+        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+        $targetDir = $package->getTargetDir();
+
+        return $basePath . ($targetDir ? '/'.$targetDir : '');
     }
 
     protected function initializeVendorDir()
