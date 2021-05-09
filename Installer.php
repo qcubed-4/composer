@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Routines to assist in the installation of various parts of QCubed with composer.
+ * Routines to assist in the installation of various parts of QCubed-4 with composer.
  *
  */
 
@@ -10,7 +10,6 @@ namespace QCubed\Composer;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
-use Composer\Util\Filesystem;
 use React\Promise\PromiseInterface;
 
 $__CONFIG_ONLY__ = true;
@@ -37,13 +36,22 @@ class Installer extends LibraryInstaller
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo, $package);
-
-        switch ($package->getType()) {
-            case 'qcubed-library':
+        $afterInstall = function () use ($package) {
+            if ($package->getType() == 'qcubed-library') {
                 $this->composerLibraryInstall($package);
-                break;
+            }
+        };
+
+        // install the package the normal composer way
+        $promise = parent::install($repo, $package);
+
+        // Composer v2 might return a promise here
+        if ($promise instanceof PromiseInterface) {
+            return $promise->then($afterInstall);
         }
+
+        // If not, execute the code right away as parent::install executed synchronously (composer v1, or v2 without async)
+        $afterInstall();
     }
 
     /**
@@ -59,21 +67,9 @@ class Installer extends LibraryInstaller
      */
     protected function composerLibraryInstall($package)
     {
-        require_once(__DIR__ . '/qcubed.inc.php');    // get the configuration options so we can know where to put the plugin files
+        $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
 
-        if (defined('QCUBED_PROJECT_DIR')) {
-            $strDestDir = realpath(dirname(QCUBED_PROJECT_DIR));
-        } else {
-            // perhaps a first-time install, so default to the directory above the vendor directory
-            if ($this->vendorDir) {
-                $strDestDir = realpath(dirname($this->vendorDir));
-            } else {
-                $strDestDir = realpath(dirname(dirname(dirname(__DIR__))));
-            }
-
-        }
-
-        $strLibraryDir = $this->getPackageBasePath($package);
+        $strLibraryDir = $this->getInstallPath($package);
         // recursively copy the contents of the install subdirectory in the plugin.
         $strInstallDir = $strLibraryDir . '/install';
 
@@ -84,21 +80,21 @@ class Installer extends LibraryInstaller
         $this->register();
     }
 
-//    public function getInstallPath(PackageInterface $package)
-//    {
-//        $this->initializeVendorDir();
-//
-//        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
-//        $targetDir = $package->getTargetDir();
-//
-//        return $basePath . ($targetDir ? '/'.$targetDir : '');
-//    }
-//
-//    protected function initializeVendorDir()
-//    {
-//        $this->filesystem->ensureDirectoryExists($this->vendorDir);
-//        $this->vendorDir = realpath($this->vendorDir);
-//    }
+    public function getInstallPath(PackageInterface $package)
+    {
+        $this->initializeVendorDir();
+
+        $basePath = ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+        $targetDir = $package->getTargetDir();
+
+        return $basePath . ($targetDir ? '/'.$targetDir : '');
+    }
+
+    protected function initializeVendorDir()
+    {
+        $this->filesystem->ensureDirectoryExists($this->vendorDir);
+        $this->vendorDir = realpath($this->vendorDir);
+    }
 
     protected function register()
     {
@@ -118,13 +114,23 @@ class Installer extends LibraryInstaller
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        parent::install($repo, $initial, $target);
+        $afterUpdate = function () use ($initial, $target) {
+            $this->unregister($target, true);
+            if ($initial->getType() == 'qcubed-library') {
+                $this->composerLibraryInstall($initial);
+            }
+        };
 
-        $this->unregister($target, true);
-        $strPackageType = $target->getType();
-        if ($strPackageType == "qcubed-library") {
-            $this->composerLibraryInstall($target);
+        // update the package the normal composer way
+        $promise = parent::update($repo, $initial, $target);
+
+        // Composer v2 might return a promise here
+        if ($promise instanceof PromiseInterface) {
+            return $promise->then($afterUpdate);
         }
+
+        // If not, execute the code right away as parent::install executed synchronously (composer v1, or v2 without async)
+        $afterUpdate();
     }
 
     /**
@@ -140,7 +146,6 @@ class Installer extends LibraryInstaller
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
 
-
     /**
      * Uninstalls a plugin if requested.
      *
@@ -149,13 +154,23 @@ class Installer extends LibraryInstaller
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $strPackageType = $package->getType();
-        if ($strPackageType == "qcubed-library") {
-            $this->composerLibraryUninstall($package);
-        }
-        parent::uninstall($repo, $package);
-    }
+        $afterUninstall = function () use ($package) {
+            if ($package->getType() == 'qcubed-library') {
+                $this->composerLibraryUninstall($package);
+            }
+        };
 
+        // uninstall the package the normal composer way
+        $promise = parent::uninstall($repo, $package);
+
+        // Composer v2 might return a promise here
+        if ($promise instanceof PromiseInterface) {
+            return $promise->then($afterUninstall);
+        }
+
+        // If not, execute the code right away as parent::uninstall executed synchronously (composer v1, or v2 without async)
+        $afterUninstall();
+    }
 
     /**
      * Delete the given plugin.
@@ -214,7 +229,7 @@ class Installer extends LibraryInstaller
         }
 
         $targetDir = QCUBED_CONFIG_DIR . '/control_registry';
-        $srcDir = $this->getPackageBasePath($package) . '/install/project/includes/configuration/control_registry';
+        $srcDir = $this->getInstallPath($package) . '/install/project/includes/configuration/control_registry';
 
         self::removeMatchingFiles($srcDir, $targetDir);
     }
