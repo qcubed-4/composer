@@ -2,7 +2,7 @@
   "name": "qcubed-4/composer",
   "description": "Installer plugin for the QCubed-4 framework.",
   "type": "composer-plugin",
-  "keywords": ["qcubed", "composer", "install"],
+  "keywords": ["qcubed-4", "composer", "install"],
   "license": "MIT",
   "require": {
     "composer-plugin-api": "^2.0"
